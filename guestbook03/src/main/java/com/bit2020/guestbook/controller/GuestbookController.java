@@ -15,7 +15,6 @@ import com.bit2020.guestbook.vo.GuestbookVo;
 
 @Controller
 public class GuestbookController {
-	long n;
 	
 	@Autowired
 	private GuestbookRepository guestbookRepository;
@@ -27,9 +26,9 @@ public class GuestbookController {
 	}
 	
 	@RequestMapping("/form/{no}")
-	public String form(@PathVariable("no") long no) 
+	public String form(@PathVariable("no") long no, Model model) 
 	{	
-		n = no;
+		model.addAttribute("no", no);
 		return "/WEB-INF/views/deleteform.jsp";
 	}
 	
@@ -40,9 +39,9 @@ public class GuestbookController {
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(
+	public String delete(@RequestParam(value="no", required=true, defaultValue="0") long no,
 			@RequestParam(value="password", required=true, defaultValue="") String password) {
-		guestbookRepository.delete(n, password);
+		guestbookRepository.delete(no, password);
 		return "redirect:/";
 	}
 }
